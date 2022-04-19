@@ -75,7 +75,23 @@
 					}
 					else {
 						// check if token work
-						echo "SHIT";
+						if(isset($phrasedata['user_id']) && isset($phrasedata['token'])) {
+							if($phrasedata['user_id'] != "" && isset($phrasedata['token']) != "") {
+								// verify if token is true
+								if(check_token_credential($conn, $_GET['app_id'], $phrasedata['user_id'], $phrasedata['token'])) {
+									echo message_pack_success(200, []);
+								}
+								else {
+									echo message_pack_error(403);
+								}
+							}
+							else {
+								echo message_pack_error(432);
+							}
+						}
+						else {
+							echo message_pack_error(432);
+						}
 					}
 				}
 				else if($_GET['opcode'] == "user_register") {
