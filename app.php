@@ -12,7 +12,7 @@
 			// send empty body to acquire HTTPS cert
 			header("HTTP/1.1 204 No Content");
 			header("Access-Control-Allow-Origin: *");
-			header("Access-Control-Allow-Methods: POST, OPTIONS");
+			header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 			header("Access-Control-Allow-Headers: X-PINGOTHER, Content-Type");
 
 			die();
@@ -30,7 +30,25 @@
 			else {
 				// start handling for app
 
-				
+				if($_GET['opcode'] == "generate_new_secret") {
+					if(isset($phrasedata['identity_key'])) {
+						if($phrasedata['identity_key'] != "") {
+							
+						}
+						else {
+							echo message_pack_error(405);
+						}
+					}
+					else {
+						echo message_pack_error(405);
+					}
+				}
+				else if($_GET['opcode'] == "get_app_name") {
+					
+				}
+				else {
+					echo message_pack_error(433);
+				}
 			}
 		}
 		// handle if method is not in list of allowed
