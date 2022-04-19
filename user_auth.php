@@ -12,7 +12,7 @@
 			// send empty body to acquire HTTPS cert
 			header("HTTP/1.1 204 No Content");
 			header("Access-Control-Allow-Origin: *");
-			header("Access-Control-Allow-Methods: POST, OPTIONS");
+			header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 			header("Access-Control-Allow-Headers: X-PINGOTHER, Content-Type");
 
 			die();
