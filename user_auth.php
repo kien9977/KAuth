@@ -19,15 +19,8 @@
 		}
 		// check if method is POST
 		else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			// process input
-			$inputdata = file_get_contents("php://input");
-			$phrasedata = json_decode($inputdata, true);
-
-			if($phrasedata == NULL) {
-				// process when data malfunction
-				echo message_pack_error(405);
-			}
-			else {
+			// handle event app not exist
+			if(check_app_exist($conn, $_GET['app_id'])) {
 				// start handling for user
 
 				if($_GET['opcode'] == "user_login") {
@@ -40,6 +33,12 @@
 						echo message_pack_error(432);
 					}
 					else {
+						// verify then give a token
+
+						if(isset($phrasedata['app_id'])) {
+							if($phrasedata['app_id'] != "") {
+							}
+						}
 
 					}
 				}
@@ -53,7 +52,7 @@
 						echo message_pack_error(432);
 					}
 					else {
-						
+						// check if token work
 					}
 				}
 				else if($_GET['opcode'] == "user_register") {
@@ -66,7 +65,7 @@
 						echo message_pack_error(432);
 					}
 					else {
-						
+						// register a new user
 					}
 				}
 				else if($_GET['opcode'] == "user_delete") {
@@ -79,12 +78,29 @@
 						echo message_pack_error(432);
 					}
 					else {
-						
+						// delete an account
+					}
+				}
+				else if($_GET['opcode'] == "user_deauth") {
+					// process input
+					$inputdata = file_get_contents("php://input");
+					$phrasedata = json_decode($inputdata, true);
+
+					if($phrasedata == NULL) {
+						// process when data malfunction
+						echo message_pack_error(432);
+					}
+					else {
+						// delete an account
 					}
 				}
 				else {
 					echo message_pack_error(405);
 				}
+				
+			}
+			else {
+				echo message_pack_error(404);
 				
 			}
 		}
