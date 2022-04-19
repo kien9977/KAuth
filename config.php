@@ -11,7 +11,7 @@
 	$_SQLINFO['port'] = 3306;
 	$_SQLINFO['username'] = 'root';
 	$_SQLINFO['password'] = '';
-	$_SQLINFO['table'] = 'k_auth_demo';
+	$_SQLINFO['database'] = 'k_auth_demo';
 
 	/*
 		End of SQL configuration
@@ -36,7 +36,7 @@
 	*/
 
 	// connect to database
-	$conn = mysqli_connect($host,$username,$password,$database) or die('Cannot connect to database');	
+	$conn = mysqli_connect($_SQLINFO['server'], $_SQLINFO['username'], $_SQLINFO['password'], $_SQLINFO['database'], $_SQLINFO['port']) or die('Cannot connect to database');	
 
 	// To avoid SQLi it should define
 	mysqli_query($conn, "SET NAMES 'utf8mb4'");
