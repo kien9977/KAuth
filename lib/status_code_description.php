@@ -3,6 +3,9 @@
 		if($code == 200) {
 			return "OK";
 		}
+		else if($code == 403) {
+			return "Credential is invalid";
+		}
 		else if($code == 405) {
 			return "Method not allowed";
 		}
