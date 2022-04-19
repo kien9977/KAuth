@@ -15,6 +15,9 @@
 		else if($code == 433) {
 			return "[opcode] not valid, please read the documents carefully and then try again";
 		}
+		else if($code == 512) {
+			return "SQL server(s) caused an error";
+		}
 		else {
 			return "Unknown error";
 		}
