@@ -28,8 +28,63 @@
 				echo message_pack_error(405);
 			}
 			else {
-				// start handling for app
+				// start handling for user
 
+				if($_GET['opcode'] == "user_login") {
+					// process input
+					$inputdata = file_get_contents("php://input");
+					$phrasedata = json_decode($inputdata, true);
+
+					if($phrasedata == NULL) {
+						// process when data malfunction
+						echo message_pack_error(432);
+					}
+					else {
+
+					}
+				}
+				else if($_GET['opcode'] == "user_auth") {
+					// process input
+					$inputdata = file_get_contents("php://input");
+					$phrasedata = json_decode($inputdata, true);
+
+					if($phrasedata == NULL) {
+						// process when data malfunction
+						echo message_pack_error(432);
+					}
+					else {
+						
+					}
+				}
+				else if($_GET['opcode'] == "user_register") {
+					// process input
+					$inputdata = file_get_contents("php://input");
+					$phrasedata = json_decode($inputdata, true);
+
+					if($phrasedata == NULL) {
+						// process when data malfunction
+						echo message_pack_error(432);
+					}
+					else {
+						
+					}
+				}
+				else if($_GET['opcode'] == "user_delete") {
+					// process input
+					$inputdata = file_get_contents("php://input");
+					$phrasedata = json_decode($inputdata, true);
+
+					if($phrasedata == NULL) {
+						// process when data malfunction
+						echo message_pack_error(432);
+					}
+					else {
+						
+					}
+				}
+				else {
+					echo message_pack_error(405);
+				}
 				
 			}
 		}
