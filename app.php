@@ -23,56 +23,60 @@
 		else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			// start handling for app
 
-			// on event opcode is generate_new_secret
-			if($_GET['opcode'] == "generate_new_secret") {
-				// process input
-				$inputdata = file_get_contents("php://input");
-				$phrasedata = json_decode($inputdata, true);
+			// handle event app not exist
+			if(check_app_exist($conn, $_GET['app_id'])) {
+				// on event opcode is generate_new_secret
+				if($_GET['opcode'] == "generate_new_secret") {
+					// process input
+					$inputdata = file_get_contents("php://input");
+					$phrasedata = json_decode($inputdata, true);
 
-				if($phrasedata == NULL) {
-					// process when data malfunction
-					echo message_pack_error(432);
-				}
-				else {
-					if(isset($phrasedata['identity_key'])) {
-						if($phrasedata['identity_key'] != "") {
-							if(check_identity_key($conn, $_GET['app_id'], $phrasedata['identity_key'])) {
-								$res = generate_new_secret($conn, $_GET['app_id']);
+					if($phrasedata == NULL) {
+						// process when data malfunction
+						echo message_pack_error(432);
+					}
+					else {
+						if(isset($phrasedata['identity_key'])) {
+							if($phrasedata['identity_key'] != "") {
+								if(check_identity_key($conn, $_GET['app_id'], $phrasedata['identity_key'])) {
+									$res = generate_new_secret($conn, $_GET['app_id']);
 
 
-								if($res == "") {
-									echo message_pack_error(512);
-									
+									if($res == "") {
+										echo message_pack_error(512);
+										
+									}
+									else {
+										$return_data = array("new_secret" => $res);
+										echo message_pack_success(200, $return_data);
+									}
 								}
 								else {
-									$return_data = array("new_secret" => $res);
-									echo message_pack_success(200, $return_data);
+									echo message_pack_error(403);
 								}
 							}
 							else {
-								echo message_pack_error(403);
+								echo message_pack_error(432);
 							}
 						}
 						else {
 							echo message_pack_error(432);
 						}
 					}
-					else {
-						echo message_pack_error(432);
-					}
+					
 				}
-				
-			}
-			// on event opcode is get_app_name
-			else if($_GET['opcode'] == "get_app_name") {
-				$return_data = array("app_id" => $_GET['app_id'], "app_name" => read_app_name($conn, $_GET['app_id']));
-				echo message_pack_success(200, $return_data);
+				// on event opcode is get_app_name
+				else if($_GET['opcode'] == "get_app_name") {
+					$return_data = array("app_id" => $_GET['app_id'], "app_name" => read_app_name($conn, $_GET['app_id']));
+					echo message_pack_success(200, $return_data);
+				}
+				else {
+					echo message_pack_error(433);
+				}
 			}
 			else {
-				echo message_pack_error(433);
+				echo message_pack_error(404);
 			}
-
-
 			
 		}
 		// handle if method is not in list of allowed
