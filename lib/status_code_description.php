@@ -6,6 +6,9 @@
 		else if($code == 403) {
 			return "Credential is invalid";
 		}
+		else if($code == 404) {
+			return "App not found";
+		}
 		else if($code == 405) {
 			return "Method not allowed";
 		}
