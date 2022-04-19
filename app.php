@@ -1,6 +1,8 @@
 <?php
 	include('config.php');
 	include('lib/message_pack.php');
+	include('lib/sql_manipulate.php');
+	include('lib/validate.php');
 
 	// send header to client to handle it as json
 	header("Access-Control-Allow-Origin: *");
@@ -19,37 +21,59 @@
 		}
 		// check if method is POST
 		else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			// process input
-			$inputdata = file_get_contents("php://input");
-			$phrasedata = json_decode($inputdata, true);
+			// start handling for app
 
-			if($phrasedata == NULL) {
-				// process when data malfunction
-				echo message_pack_error(405);
-			}
-			else {
-				// start handling for app
+			// on event opcode is generate_new_secret
+			if($_GET['opcode'] == "generate_new_secret") {
+				// process input
+				$inputdata = file_get_contents("php://input");
+				$phrasedata = json_decode($inputdata, true);
 
-				if($_GET['opcode'] == "generate_new_secret") {
+				if($phrasedata == NULL) {
+					// process when data malfunction
+					echo message_pack_error(432);
+				}
+				else {
 					if(isset($phrasedata['identity_key'])) {
 						if($phrasedata['identity_key'] != "") {
-							
+							if(check_identity_key($conn, $_GET['app_id'], $phrasedata['identity_key'])) {
+								$res = generate_new_secret($conn, $_GET['app_id']);
+
+
+								if($res == "") {
+									echo message_pack_error(512);
+									
+								}
+								else {
+									$return_data = array("new_secret" => $res);
+									echo message_pack_success(200, $return_data);
+								}
+							}
+							else {
+								echo message_pack_error(403);
+							}
 						}
 						else {
-							echo message_pack_error(405);
+							echo message_pack_error(432);
 						}
 					}
 					else {
-						echo message_pack_error(405);
+						echo message_pack_error(432);
 					}
 				}
-				else if($_GET['opcode'] == "get_app_name") {
-					
-				}
-				else {
-					echo message_pack_error(433);
-				}
+				
 			}
+			// on event opcode is get_app_name
+			else if($_GET['opcode'] == "get_app_name") {
+				$return_data = array("app_id" => $_GET['app_id'], "app_name" => read_app_name($conn, $_GET['app_id']));
+				echo message_pack_success(200, $return_data);
+			}
+			else {
+				echo message_pack_error(433);
+			}
+
+
+			
 		}
 		// handle if method is not in list of allowed
 		else {
