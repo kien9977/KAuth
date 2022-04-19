@@ -17,3 +17,6 @@ Author:
 -------------
 How to use this project:
 + See INIT.md
+-------------
+Status code description:
++ 200: OK
