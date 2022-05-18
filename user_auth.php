@@ -105,7 +105,21 @@
 					}
 					else {
 						// register a new user
-						echo "SHIT";
+						if(isset($phrasedata['user_id']) && isset($phrasedata['secret'])) {
+							if($phrasedata['user_id'] != "" && isset($phrasedata['secret']) != "") {
+								if(check_user_exists($conn, $_GET['app_id'], $phrasedata['user_id'])) {
+									if(write_user_data($conn, $_GET['app_id'], $phrasedata['user_id'], $phrasedata['secret'])) {
+										echo message_pack_success(200, []);
+									}
+									else {
+										echo message_pack_error(512);
+									}
+								}
+								else {
+									echo message_pack_error(434);
+								}
+							}
+						}
 					}
 				}
 				else if($_GET['opcode'] == "user_delete") {
