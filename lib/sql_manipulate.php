@@ -39,5 +39,11 @@
 		return "";
 	}
 
-	
+	function write_user_data($conn, $app_id, $user_id, $secret) {
+		$stmt = mysqli_prepare($conn, "INSERT INTO user(app_id, user_id, secret, created_at) VALUES (?, ?, ?, ?)");
+		mysqli_stmt_bind_param($stmt, "ssss", $app_id, $user_id, $secret, time());
+		$res = mysqli_stmt_execute($stmt);
+
+		return $res;
+	}
 ?>

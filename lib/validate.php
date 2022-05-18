@@ -56,4 +56,17 @@
 			return false;
 		}
 	}
+
+	function check_user_exists($conn, $app_id, $user_id) {
+		$stmt = mysqli_prepare($conn, "SELECT count(*) as count FROM user WHERE app_id = ? AND user_id = ?");
+		mysqli_stmt_bind_param($stmt, "ss", $app_id, $user_id);
+		mysqli_stmt_execute($stmt);
+		mysqli_stmt_bind_result($stmt, $count);
+		mysqli_stmt_fetch($stmt);
+
+		if($count == 0) {
+			return false;
+		} 
+		return true;
+	}
 ?>
